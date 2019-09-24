@@ -85,8 +85,7 @@ def ppcm_rec(L):
 
 #print(ppcm_rec([5,6,8]))
 
-def Decomp_Transpo(sigma): # il y a une erreur ici, test avec [0,2,1]
-    
+def Decomp_Transpo(sigma): #
     if (len(sigma)==2):
         return [sigma]
     else:
@@ -124,21 +123,5 @@ def Liste_Alternee(n):
             La.append(item)
     return La
 
-def Decomp_Cycles(sigma):
-    reste = set(sigma)
-    resultat = []
-    while len(reste) > 0:
-        n = reste.pop()
-        cycle = [n]
-        while True:
-            n = sigma[n]
-            if n not in reste:
-                break
-            reste.remove(n)
-            cycle.append(n)
-        if (len(cycle)!=1):
-            resultat.append(cycle)
-    return resultat
 
-
-print(Decomp_Cycles([2,5,1,3,4,0]))
+#print(Liste_Alternee(3))

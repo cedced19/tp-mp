@@ -42,7 +42,7 @@ def base_rec(n,b):
     else:
         return [n%b] + base_rec(n//b,b) 
 
-print(base_rec(6,2))
+#print(base_rec(6,2))
 
 def lexico_inf(a,b):
     if (a[0]<b[0]):
@@ -103,3 +103,15 @@ def generation(d):
     return R
 
 #print(generation(8))
+
+def representation(N):
+    if (N==0):
+        return []
+    return ([N%2] + representation(-(N//2)))
+
+print(representation(0), 0)
+print(representation(-1), -1)
+print(representation(-8), -8)
+print(representation(4), 4)
+print(representation(8), 8)
+print(representation(2019), 2019)

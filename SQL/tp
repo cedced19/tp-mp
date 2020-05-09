@@ -1,0 +1,99 @@
+
+-- EXO 1
+-- 1
+SELECT * from communes As C Join departements As D On  C.num_departement = D.num_departement Where D.nom = 'Bas Rhin' Order by C.nom Asc
+
+--2
+SELECT SUM(population_2010) from communes
+
+--3
+SELECT ((b-a)*100) / a From (SELECT SUM(population_2010) As b, SUM(population_1999) As a from communes)
+
+--4
+SELECT * From communes as c ORDER BY c.population_2010 DESC LIMIT 10
+
+--5 
+SELECT * From communes as c ORDER BY c.population_2010/c.surface DESC LIMIT 10
+
+--6
+SELECT * From communes as c ORDER BY zmax DESC LIMIT 1
+
+--7
+SELECT nom, (((b-a)*100) / a) As c  From (SELECT nom, (population_2010) As b, (population_1999) As a from communes) Order By c Desc LIMIT 10
+
+--v2 sans le chiffre
+Select Nom From (SELECT nom, (((b-a)*100) / a) As c  From (SELECT nom, (population_2010) As b, (population_1999) As a from communes) Order By c Desc LIMIT 10)
+
+--8 (on attendiat le numéro uniquement)
+Select COUNT(*),d.nom from communes as c join departements as d on d.num_departement = c.num_departement group by c.num_departement 
+
+--9 (on attendiat le numéro uniquement)
+Select SUM(c.population_2010) as f,d.nom from communes as c join departements as d on d.num_departement = c.num_departement group by c.num_departement Order by f DESC
+
+--Exo 2
+--1
+Select COUNT(*),d.nom from communes as c join departements as d on d.num_departement = c.num_departement group by c.num_departement 
+
+--2
+Select SUM(c.population_2010) as f,d.nom from communes as c join departements as d on d.num_departement = c.num_departement group by c.num_departement Order by f DESC
+
+--3
+Select d.nom, r.nom from regions as r join departements as d on d.num_region = r.num_region  where (r.nom = 'Basse Normandie' or r.nom ='Haute Normandie')
+
+
+--4
+SELECT d.nom, SUM(c.population_2010) as pop from communes as c join departements as d on d.num_departement = c.num_departement GROUP BY d.nom ORDER BY pop DESC
+
+--5
+SELECT d.nom, SUM(c.population_2010/c.surface) as densite from communes as c join departements as d on d.num_departement = c.num_departement GROUP BY d.nom ORDER BY densite DESC
+
+--6
+SELECT d.nom, SUM(c.population_2010) as pop from communes as c join departements as d on d.num_departement = c.num_departement GROUP BY d.nom  HAVING pop> 1e6 ORDER BY pop DESC 
+
+--EXO 2
+--1
+SELECT c.nom as commune, r.nom as region, d.nom as departement from communes as c join departements as d on d.num_departement = c.num_departement join regions as r on r.num_region = d.num_region  ORDER BY c.zmax DESC LIMIT 10
+
+--2
+SELECT COUNT(c.nom) as nombre, r.nom as region from communes as c join departements as d on d.num_departement = c.num_departement join regions as r on r.num_region = d.num_region GROUP BY r.nom
+
+--3
+SELECT SUM(c.population_2010) as pop, r.nom as region from communes as c join departements as d on d.num_departement = c.num_departement join regions as r on r.num_region = d.num_region GROUP BY r.nom ORDER BY pop DESC LIMIT 10
+
+--Exo 4
+--1
+SELECT c.nom from regions as r
+join departements as d on r.num_region = d.num_region 
+join communes as c on d.num_departement = c.num_departement  
+where r.nom = 'Auvergne' 
+INTERSECT
+SELECT c.nom from regions as r
+join departements as d on r.num_region = d.num_region 
+join communes as c on d.num_departement = c.num_departement  
+where r.nom = 'Aquitaine' 
+
+--2
+SELECT r.nom from departements as d join regions as r on r.num_region = d.num_region GROUP BY r.nom Having d.nom = "Bas Rhin"
+
+SELECT r.nom from departements as d join regions as r on r.num_region = d.num_region GROUP BY r.nom Having d.nom REGEXP "B." or d.nom REGEXP "b."
+
+--3
+SELECT r.nom from communes as c join departements as d on d.num_departement = c.num_departement join regions as r on r.num_region = d.num_region GROUP BY r.nom Having c.nom REGEXP "Chamb."
+
+--4
+SELECT c.nom from communes as c  
+where c.num_departement = 31
+INTERSECT
+SELECT c.nom from communes as c  
+where c.num_departement = 24
+
+--5
+SELECT c.nom from regions as r
+join departements as d on r.num_region = d.num_region 
+join communes as c on d.num_departement = c.num_departement  
+where d.nom = 'Bas Rhin'
+INTERSECT
+SELECT c.nom from regions as r
+join departements as d on r.num_region = d.num_region 
+join communes as c on d.num_departement = c.num_departement   
+where d.nom != 'Bas Rhin'

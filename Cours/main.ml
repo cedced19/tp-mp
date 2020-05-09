@@ -52,3 +52,8 @@ let dijkstra g s =
   in
   
   etape (creerfile n);;
+
+
+let rec prefcom l m = match (m,l) with
+| a::q, b::r when a=b -> let u, v, w = pref_com q r in a::u,v,w
+| _,_ -> [],m,l
